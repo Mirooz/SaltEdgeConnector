@@ -1,7 +1,7 @@
 package com.saltedge.connector.client;
 
 import com.saltedge.connector.model.Account;
-import com.saltedge.connector.model.Customer;
+import com.saltedge.connector.model.Customers;
 import com.saltedge.connector.model.Provider;
 import com.saltedge.connector.model.Transaction;
 import reactor.core.publisher.Flux;
@@ -33,27 +33,27 @@ public interface SaltEdgeClient {
      * @param identifier The customer identifier
      * @return A Mono containing the created customer
      */
-    Mono<Customer> createCustomer(String identifier);
+    Mono<Customers> createCustomer(String identifier);
 
     /**
      * Retrieves a customer by its ID
      * @param customerId The customer ID
      * @return A Mono containing the customer
      */
-    Mono<Customer> getCustomer(String customerId);
+    Mono<Customers> getCustomer(String customerId);
 
     /**
      * Retrieves all customers
      * @return A Flux of customers
      */
-    Flux<Customer> getAllCustomers();
+    Flux<Customers> getAllCustomers();
 
     /**
      * Deletes a customer
      * @param customerId The customer ID
      * @return An empty Mono
      */
-    Mono<Void> deleteCustomer(String customerId);
+    Mono<Customers> deleteCustomer(String customerId);
 
     /**
      * Updates a customer's attributes
@@ -61,7 +61,7 @@ public interface SaltEdgeClient {
      * @param attributes The attributes to update
      * @return A Mono containing the updated customer
      */
-    Mono<Customer> updateCustomer(String customerId, Map<String, Object> attributes);
+    Mono<Customers> updateCustomer(String customerId, Map<String, Object> attributes);
 
     // Account operations
     /**

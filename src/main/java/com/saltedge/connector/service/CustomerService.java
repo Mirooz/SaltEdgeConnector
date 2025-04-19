@@ -1,7 +1,9 @@
 package com.saltedge.connector.service;
-
-import com.saltedge.connector.model.Customer;
+import com.saltedge.connector.model.Customers;
+import com.saltedge.connector.model.response.SaltEdgeResponse;
+import com.saltedge.connector.model.response.SaltEdgeSingleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,25 +20,31 @@ public class CustomerService {
         this.saltEdgeService = saltEdgeService;
     }
 
-    public Mono<Customer> createCustomer(String identifier) {
-        Map<String, Object> requestBody = Map.of("identifier", identifier);
-        return saltEdgeService.post("/customers", requestBody, Customer.class);
+    public Flux<Customers> getAllCustomers() {
+        return saltEdgeService.get("/customers", new ParameterizedTypeReference<SaltEdgeResponse<Customers>>() {})
+                .flatMapMany(response -> Flux.fromIterable(response.getData()));
     }
 
-    public Mono<Customer> getCustomer(String customerId) {
-        return saltEdgeService.get("/customers/" + customerId, Customer.class);
+    public Mono<Customers> getCustomer(String customerId) {
+        return saltEdgeService.get("/customers/" + customerId, new ParameterizedTypeReference<SaltEdgeSingleResponse<Customers>>() {})
+                .map(SaltEdgeSingleResponse::getData);
     }
 
-    public Flux<Customer> getAllCustomers() {
-        return saltEdgeService.get("/customers", Customer[].class)
-                .flatMapMany(Flux::fromArray);
+    public Mono<Customers> createCustomer(String identifier) {
+        Map<String, Object> requestBody = Map.of(
+                "data", Map.of("identifier", identifier)
+        );
+        return saltEdgeService.post("/customers", requestBody, new ParameterizedTypeReference<SaltEdgeSingleResponse<Customers>>() {})
+                .map(SaltEdgeSingleResponse::getData);
     }
 
-    public Mono<Void> deleteCustomer(String customerId) {
-        return saltEdgeService.delete("/customers/" + customerId, Void.class);
+    public Mono<Customers> updateCustomer(String customerId, Map<String, Object> attributes) {
+        return saltEdgeService.put("/customers/" + customerId, attributes, new ParameterizedTypeReference<SaltEdgeSingleResponse<Customers>>() {})
+                .map(SaltEdgeSingleResponse::getData);
     }
 
-    public Mono<Customer> updateCustomer(String customerId, Map<String, Object> attributes) {
-        return saltEdgeService.put("/customers/" + customerId, attributes, Customer.class);
+    public Mono<Customers> deleteCustomer(String customerId) {
+        return saltEdgeService.delete("/customers/" + customerId,new ParameterizedTypeReference<SaltEdgeSingleResponse<Customers>>() {})
+                .map(SaltEdgeSingleResponse::getData);
     }
 } 

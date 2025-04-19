@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.Instant;
 
 @Data
-public class Customer {
+public class Customers {
     @JsonProperty("customer_id")
     private String customerId;
 
@@ -24,4 +24,7 @@ public class Customer {
 
     @JsonProperty("updated_at")
     private Instant updatedAt;
+
+    @JsonProperty("deleted")
+    private boolean deleted ;
 } 

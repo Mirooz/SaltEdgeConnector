@@ -53,8 +53,14 @@ public class SaltEdgeService {
                 .retrieve()
                 .bodyToMono(responseType);
     }
-
-    public <T, R> Mono<T> post(String endpoint, R requestBody, Class<T> responseType) {
+    public <T, R> Mono<T> post(String endpoint, R requestBody,Class<T> responseType) {
+        return webClient.post()
+                .uri(endpoint)
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToMono(responseType);
+    }
+    public <T, R> Mono<T> post(String endpoint, R requestBody, ParameterizedTypeReference<T> responseType) {
         return webClient.post()
                 .uri(endpoint)
                 .bodyValue(requestBody)
@@ -70,7 +76,21 @@ public class SaltEdgeService {
                 .bodyToMono(responseType);
     }
 
+    public <T, R> Mono<T> put(String endpoint, R requestBody, ParameterizedTypeReference<T> responseType) {
+        return webClient.put()
+                .uri(endpoint)
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToMono(responseType);
+    }
+
     public <T> Mono<T> delete(String endpoint, Class<T> responseType) {
+        return webClient.delete()
+                .uri(endpoint)
+                .retrieve()
+                .bodyToMono(responseType);
+    }
+    public <T> Mono<T> delete(String endpoint,  ParameterizedTypeReference<T> responseType) {
         return webClient.delete()
                 .uri(endpoint)
                 .retrieve()

@@ -1,9 +1,10 @@
 package com.saltedge.connector.client;
 
 import com.saltedge.connector.model.Account;
-import com.saltedge.connector.model.Customer;
+import com.saltedge.connector.model.Customers;
 import com.saltedge.connector.model.Provider;
 import com.saltedge.connector.model.Transaction;
+import com.saltedge.connector.service.CustomerService;
 import com.saltedge.connector.service.ProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,12 +26,15 @@ public class SaltEdgeClientImpl implements SaltEdgeClient {
     private final WebClient webClient;
     @Autowired
     private final ProviderService providerService;
+    @Autowired
+    private final CustomerService customerService;
 
     public SaltEdgeClientImpl(
             @Value("${saltedge.api.base-url}") String baseUrl,
             @Value("${saltedge.api.app-id}") String appId,
-            @Value("${saltedge.api.secret}") String secret, ProviderService providerService) {
+            @Value("${saltedge.api.secret}") String secret, ProviderService providerService, CustomerService customerService) {
         this.providerService = providerService;
+        this.customerService = customerService;
         this.webClient = WebClient.builder()
                 .baseUrl(baseUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -70,28 +74,28 @@ public class SaltEdgeClientImpl implements SaltEdgeClient {
     }
 
     @Override
-    public Mono<Customer> createCustomer(String identifier) {
-        return null;
+    public Mono<Customers> createCustomer(String identifier) {
+        return customerService.createCustomer(identifier);
     }
 
     @Override
-    public Mono<Customer> getCustomer(String customerId) {
-        return null;
+    public Mono<Customers> getCustomer(String customerId) {
+        return customerService.getCustomer(customerId);
     }
 
     @Override
-    public Flux<Customer> getAllCustomers() {
-        return null;
+    public Flux<Customers> getAllCustomers() {
+        return customerService.getAllCustomers();
     }
 
     @Override
-    public Mono<Void> deleteCustomer(String customerId) {
-        return null;
+    public Mono<Customers> deleteCustomer(String customerId) {
+        return customerService.deleteCustomer(customerId);
     }
 
     @Override
-    public Mono<Customer> updateCustomer(String customerId, Map<String, Object> attributes) {
-        return null;
+    public Mono<Customers> updateCustomer(String customerId, Map<String, Object> attributes) {
+        return customerService.updateCustomer(customerId,attributes);
     }
 
     @Override
