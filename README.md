@@ -79,11 +79,3 @@ These wrappers handle the standard Salt Edge response format including metadata.
 ## Error Handling
 
 The client uses reactive error handling. Errors are propagated through the reactive streams and can be handled using standard Project Reactor operators.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. 

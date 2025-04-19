@@ -16,6 +16,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -68,114 +69,86 @@ public class SaltEdgeClientImpl implements SaltEdgeClient {
         return providerService.getProvider(providerCode);
     }
 
-    // Customer operations
     @Override
     public Mono<Customer> createCustomer(String identifier) {
-        return webClient.post()
-                .uri("/customers")
-                .bodyValue(Map.of("identifier", identifier))
-                .retrieve()
-                .bodyToMono(Customer.class);
+        return null;
     }
 
     @Override
-    public Mono<Customer> getCustomer(String customerId, Map<String, Object> queryParams) {
-        return webClient.get()
-                .uri(buildUri("/customers/" + customerId, queryParams))
-                .retrieve()
-                .bodyToMono(Customer.class);
+    public Mono<Customer> getCustomer(String customerId) {
+        return null;
     }
 
     @Override
-    public Flux<Customer> getAllCustomers(Map<String, Object> queryParams) {
-        return webClient.get()
-                .uri(buildUri("/customers", queryParams))
-                .retrieve()
-                .bodyToFlux(Customer.class);
+    public Flux<Customer> getAllCustomers() {
+        return null;
     }
 
     @Override
     public Mono<Void> deleteCustomer(String customerId) {
-        return webClient.delete()
-                .uri("/customers/{id}", customerId)
-                .retrieve()
-                .bodyToMono(Void.class);
+        return null;
     }
 
     @Override
     public Mono<Customer> updateCustomer(String customerId, Map<String, Object> attributes) {
-        return webClient.put()
-                .uri("/customers/{id}", customerId)
-                .bodyValue(attributes)
-                .retrieve()
-                .bodyToMono(Customer.class);
-    }
-
-    // Account operations
-    @Override
-    public Mono<Account> getAccount(String accountId, Map<String, Object> queryParams) {
-        return webClient.get()
-                .uri(buildUri("/accounts/" + accountId, queryParams))
-                .retrieve()
-                .bodyToMono(Account.class);
+        return null;
     }
 
     @Override
-    public Flux<Account> getAccounts(Map<String, Object> queryParams) {
-        return webClient.get()
-                .uri(buildUri("/accounts", queryParams))
-                .retrieve()
-                .bodyToFlux(Account.class);
+    public Mono<Account> getAccount(String accountId) {
+        return null;
+    }
+
+    @Override
+    public Flux<Account> getAccountsByConnection(String connectionId) {
+        return null;
+    }
+
+    @Override
+    public Flux<Account> getAccountsByCustomer(String customerId) {
+        return null;
     }
 
     @Override
     public Mono<Account> updateAccount(String accountId, Map<String, Object> attributes) {
-        return webClient.put()
-                .uri("/accounts/{id}", accountId)
-                .bodyValue(attributes)
-                .retrieve()
-                .bodyToMono(Account.class);
+        return null;
     }
 
     @Override
     public Mono<Void> deleteAccount(String accountId) {
-        return webClient.delete()
-                .uri("/accounts/{id}", accountId)
-                .retrieve()
-                .bodyToMono(Void.class);
-    }
-
-    // Transaction operations
-    @Override
-    public Mono<Transaction> getTransaction(String transactionId, Map<String, Object> queryParams) {
-        return webClient.get()
-                .uri(buildUri("/transactions/" + transactionId, queryParams))
-                .retrieve()
-                .bodyToMono(Transaction.class);
+        return null;
     }
 
     @Override
-    public Flux<Transaction> getTransactions(Map<String, Object> queryParams) {
-        return webClient.get()
-                .uri(buildUri("/transactions", queryParams))
-                .retrieve()
-                .bodyToFlux(Transaction.class);
+    public Mono<Transaction> getTransaction(String transactionId) {
+        return null;
+    }
+
+    @Override
+    public Flux<Transaction> getTransactionsByAccount(String accountId, LocalDate fromDate, LocalDate toDate) {
+        return null;
+    }
+
+    @Override
+    public Flux<Transaction> getTransactionsByConnection(String connectionId, LocalDate fromDate, LocalDate toDate) {
+        return null;
+    }
+
+    @Override
+    public Flux<Transaction> getTransactionsByCustomer(String customerId, LocalDate fromDate, LocalDate toDate) {
+        return null;
     }
 
     @Override
     public Mono<Transaction> updateTransaction(String transactionId, Map<String, Object> attributes) {
-        return webClient.put()
-                .uri("/transactions/{id}", transactionId)
-                .bodyValue(attributes)
-                .retrieve()
-                .bodyToMono(Transaction.class);
+        return null;
     }
 
     @Override
     public Mono<Void> deleteTransaction(String transactionId) {
-        return webClient.delete()
-                .uri("/transactions/{id}", transactionId)
-                .retrieve()
-                .bodyToMono(Void.class);
+        return null;
     }
+
+    // Customer operations
+
 } 
