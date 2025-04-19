@@ -13,115 +13,140 @@ import java.util.Map;
 public interface SaltEdgeClient {
     // Provider operations
     /**
-     * Récupère tous les providers disponibles
-     * @return Un Flux de providers
+     * Retrieves all available providers
+     * @return A Flux of providers
      */
     Flux<Provider> getAllProviders();
 
     Flux<Provider> getProviders(Map<String, Object> queryParams);
 
-
-
-    // Customer operations
-
+    /**
+     * Retrieves a provider by its code
+     * @param providerCode The provider code
+     * @return A Mono containing the provider
+     */
     Mono<Provider> getProvider(String providerCode);
 
+    // Customer operations
     /**
-     * Crée un nouveau client
-     * @param identifier L'identifiant du client
-     * @return Un Mono contenant le client créé
+     * Creates a new customer
+     * @param identifier The customer identifier
+     * @return A Mono containing the created customer
      */
     Mono<Customer> createCustomer(String identifier);
 
     /**
-     * Récupère un client par son ID
-     * @param customerId L'identifiant du client
-     * @param queryParams Paramètres optionnels de requête
-     * @return Un Mono contenant le client
+     * Retrieves a customer by its ID
+     * @param customerId The customer ID
+     * @return A Mono containing the customer
      */
-    Mono<Customer> getCustomer(String customerId, Map<String, Object> queryParams);
+    Mono<Customer> getCustomer(String customerId);
 
     /**
-     * Récupère tous les clients
-     * @param queryParams Paramètres optionnels de requête
-     * @return Un Flux de clients
+     * Retrieves all customers
+     * @return A Flux of customers
      */
-    Flux<Customer> getAllCustomers(Map<String, Object> queryParams);
+    Flux<Customer> getAllCustomers();
 
     /**
-     * Supprime un client
-     * @param customerId L'identifiant du client
-     * @return Un Mono vide
+     * Deletes a customer
+     * @param customerId The customer ID
+     * @return An empty Mono
      */
     Mono<Void> deleteCustomer(String customerId);
 
     /**
-     * Met à jour les attributs d'un client
-     * @param customerId L'identifiant du client
-     * @param attributes Les attributs à mettre à jour
-     * @return Un Mono contenant le client mis à jour
+     * Updates a customer's attributes
+     * @param customerId The customer ID
+     * @param attributes The attributes to update
+     * @return A Mono containing the updated customer
      */
     Mono<Customer> updateCustomer(String customerId, Map<String, Object> attributes);
 
     // Account operations
     /**
-     * Récupère un compte par son ID
-     * @param accountId L'identifiant du compte
-     * @param queryParams Paramètres optionnels de requête
-     * @return Un Mono contenant le compte
+     * Retrieves an account by its ID
+     * @param accountId The account ID
+     * @return A Mono containing the account
      */
-    Mono<Account> getAccount(String accountId, Map<String, Object> queryParams);
+    Mono<Account> getAccount(String accountId);
 
     /**
-     * Récupère tous les comptes avec les paramètres spécifiés
-     * @param queryParams Paramètres de requête (connection_id, customer_id, etc.)
-     * @return Un Flux de comptes
+     * Retrieves all accounts for a connection
+     * @param connectionId The connection ID
+     * @return A Flux of accounts
      */
-    Flux<Account> getAccounts(Map<String, Object> queryParams);
+    Flux<Account> getAccountsByConnection(String connectionId);
 
     /**
-     * Met à jour les attributs d'un compte
-     * @param accountId L'identifiant du compte
-     * @param attributes Les attributs à mettre à jour
-     * @return Un Mono contenant le compte mis à jour
+     * Retrieves all accounts for a customer
+     * @param customerId The customer ID
+     * @return A Flux of accounts
+     */
+    Flux<Account> getAccountsByCustomer(String customerId);
+
+    /**
+     * Updates an account's attributes
+     * @param accountId The account ID
+     * @param attributes The attributes to update
+     * @return A Mono containing the updated account
      */
     Mono<Account> updateAccount(String accountId, Map<String, Object> attributes);
 
     /**
-     * Supprime un compte
-     * @param accountId L'identifiant du compte
-     * @return Un Mono vide
+     * Deletes an account
+     * @param accountId The account ID
+     * @return An empty Mono
      */
     Mono<Void> deleteAccount(String accountId);
 
     // Transaction operations
     /**
-     * Récupère une transaction par son ID
-     * @param transactionId L'identifiant de la transaction
-     * @param queryParams Paramètres optionnels de requête
-     * @return Un Mono contenant la transaction
+     * Retrieves a transaction by its ID
+     * @param transactionId The transaction ID
+     * @return A Mono containing the transaction
      */
-    Mono<Transaction> getTransaction(String transactionId, Map<String, Object> queryParams);
+    Mono<Transaction> getTransaction(String transactionId);
 
     /**
-     * Récupère les transactions selon les paramètres spécifiés
-     * @param queryParams Paramètres de requête (connection_id, account_id, customer_id, from_date, to_date, etc.)
-     * @return Un Flux de transactions
+     * Retrieves transactions for an account within a date range
+     * @param accountId The account ID
+     * @param fromDate The start date
+     * @param toDate The end date
+     * @return A Flux of transactions
      */
-    Flux<Transaction> getTransactions(Map<String, Object> queryParams);
+    Flux<Transaction> getTransactionsByAccount(String accountId, LocalDate fromDate, LocalDate toDate);
 
     /**
-     * Met à jour les attributs d'une transaction
-     * @param transactionId L'identifiant de la transaction
-     * @param attributes Les attributs à mettre à jour
-     * @return Un Mono contenant la transaction mise à jour
+     * Retrieves transactions for a connection within a date range
+     * @param connectionId The connection ID
+     * @param fromDate The start date
+     * @param toDate The end date
+     * @return A Flux of transactions
+     */
+    Flux<Transaction> getTransactionsByConnection(String connectionId, LocalDate fromDate, LocalDate toDate);
+
+    /**
+     * Retrieves transactions for a customer within a date range
+     * @param customerId The customer ID
+     * @param fromDate The start date
+     * @param toDate The end date
+     * @return A Flux of transactions
+     */
+    Flux<Transaction> getTransactionsByCustomer(String customerId, LocalDate fromDate, LocalDate toDate);
+
+    /**
+     * Updates a transaction's attributes
+     * @param transactionId The transaction ID
+     * @param attributes The attributes to update
+     * @return A Mono containing the updated transaction
      */
     Mono<Transaction> updateTransaction(String transactionId, Map<String, Object> attributes);
 
     /**
-     * Supprime une transaction
-     * @param transactionId L'identifiant de la transaction
-     * @return Un Mono vide
+     * Deletes a transaction
+     * @param transactionId The transaction ID
+     * @return An empty Mono
      */
     Mono<Void> deleteTransaction(String transactionId);
 } 
