@@ -1,6 +1,7 @@
 package com.saltedge.connector.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,39 +11,18 @@ import reactor.netty.http.client.HttpClient;
 
 @Configuration
 @ComponentScan("com.saltedge")
+@EnableConfigurationProperties(SaltEdgeProperties.class)
 public class SaltEdgeConfig {
-
-    @Value("${saltedge.api.url}")
-    private String apiUrl;
-
-    @Value("${saltedge.app-id}")
-    private String appId;
-
-    @Value("${saltedge.secret}")
-    private String secret;
-
     @Bean
-    public WebClient webClient() {
+    public WebClient webClient(SaltEdgeProperties properties) {
         HttpClient httpClient = HttpClient.create();
         return WebClient.builder()
-                .baseUrl(apiUrl)
+                .baseUrl(properties.getApiUrl())
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .defaultHeader("Accept", "application/json")
                 .defaultHeader("Content-type", "application/json")
-                .defaultHeader("App-id", appId)
-                .defaultHeader("Secret", secret)
+                .defaultHeader("App-id", properties.getAppId())
+                .defaultHeader("Secret", properties.getSecret())
                 .build();
-    }
-
-    public String getApiUrl() {
-        return apiUrl;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public String getSecret() {
-        return secret;
     }
 } 

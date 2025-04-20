@@ -1,0 +1,19 @@
+{
+  "properties": [
+    {
+      "name": "saltedge.api-url",
+      "type": "java.lang.String",
+      "description": "URL de l'API SaltEdge"
+    },
+    {
+      "name": "saltedge.app-id",
+      "type": "java.lang.String",
+      "description": "Identifiant de l'application SaltEdge"
+    },
+    {
+      "name": "saltedge.secret",
+      "type": "java.lang.String",
+      "description": "Clé secrète SaltEdge"
+    }
+  ]
+}
