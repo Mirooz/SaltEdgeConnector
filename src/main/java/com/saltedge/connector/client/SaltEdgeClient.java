@@ -109,89 +109,12 @@ public interface SaltEdgeClient {
     Mono<Connection> refreshConnection(String connectionId, String returnToUrl);
 
     // Account operations
-    /**
-     * Retrieves an account by its ID
-     * @param accountId The account ID
-     * @return A Mono containing the account
-     */
-    Mono<Account> getAccount(String accountId);
 
-    /**
-     * Retrieves all accounts for a connection
-     * @param connectionId The connection ID
-     * @return A Flux of accounts
-     */
-    Flux<Account> getAccountsByConnection(String connectionId);
+    Flux<Account> getAccountWithConnectionId(String connectionId);
 
-    /**
-     * Retrieves all accounts for a Customers
-     * @param customerId The Customers ID
-     * @return A Flux of accounts
-     */
-    Flux<Account> getAccountsByCustomer(String customerId);
+    Flux<Account> getAccountWithCustomerId(String customerId);
 
-    /**
-     * Updates an account's attributes
-     * @param accountId The account ID
-     * @param attributes The attributes to update
-     * @return A Mono containing the updated account
-     */
-    Mono<Account> updateAccount(String accountId, Map<String, Object> attributes);
-
-    /**
-     * Deletes an account
-     * @param accountId The account ID
-     * @return An empty Mono
-     */
-    Mono<Void> deleteAccount(String accountId);
 
     // Transaction operations
-    /**
-     * Retrieves a transaction by its ID
-     * @param transactionId The transaction ID
-     * @return A Mono containing the transaction
-     */
-    Mono<Transaction> getTransaction(String transactionId);
-
-    /**
-     * Retrieves transactions for an account within a date range
-     * @param accountId The account ID
-     * @param fromDate The start date
-     * @param toDate The end date
-     * @return A Flux of transactions
-     */
-    Flux<Transaction> getTransactionsByAccount(String accountId, LocalDate fromDate, LocalDate toDate);
-
-    /**
-     * Retrieves transactions for a connection within a date range
-     * @param connectionId The connection ID
-     * @param fromDate The start date
-     * @param toDate The end date
-     * @return A Flux of transactions
-     */
-    Flux<Transaction> getTransactionsByConnection(String connectionId, LocalDate fromDate, LocalDate toDate);
-
-    /**
-     * Retrieves transactions for a Customers within a date range
-     * @param customerId The Customers ID
-     * @param fromDate The start date
-     * @param toDate The end date
-     * @return A Flux of transactions
-     */
-    Flux<Transaction> getTransactionsByCustomer(String customerId, LocalDate fromDate, LocalDate toDate);
-
-    /**
-     * Updates a transaction's attributes
-     * @param transactionId The transaction ID
-     * @param attributes The attributes to update
-     * @return A Mono containing the updated transaction
-     */
-    Mono<Transaction> updateTransaction(String transactionId, Map<String, Object> attributes);
-
-    /**
-     * Deletes a transaction
-     * @param transactionId The transaction ID
-     * @return An empty Mono
-     */
-    Mono<Void> deleteTransaction(String transactionId);
-} 
+    Flux<Transaction> getTransactionsByConnection(String connectionId);
+}

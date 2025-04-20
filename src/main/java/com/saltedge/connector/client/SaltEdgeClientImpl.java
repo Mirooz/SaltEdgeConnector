@@ -17,7 +17,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -141,60 +140,22 @@ public class SaltEdgeClientImpl implements SaltEdgeClient {
 
 
     @Override
-    public Mono<Account> getAccount(String accountId) {
-        return accountService.getAccount(accountId);
+    public Flux<Account> getAccountWithConnectionId(String connectionId) {
+        return accountService.getAccountWithConnectionId(connectionId);
     }
 
     @Override
-    public Flux<Account> getAccountsByConnection(String connectionId) {
-        return accountService.getAccountsByConnection(connectionId);
+    public Flux<Account> getAccountWithCustomerId(String customerId) {
+        return accountService.getAccountWithCustomerId(customerId);
     }
+
 
     @Override
-    public Flux<Account> getAccountsByCustomer(String customerId) {
-        return accountService.getAccountsByCustomer(customerId);
+    public Flux<Transaction> getTransactionsByConnection(String connectionId) {
+        return transactionService.getTransactionsByConnection(connectionId);
     }
 
-    @Override
-    public Mono<Account> updateAccount(String accountId, Map<String, Object> attributes) {
-        return accountService.updateAccount(accountId, attributes);
-    }
 
-    @Override
-    public Mono<Void> deleteAccount(String accountId) {
-        return accountService.deleteAccount(accountId);
-    }
 
-    @Override
-    public Mono<Transaction> getTransaction(String transactionId) {
-        return transactionService.getTransaction(transactionId);
-    }
-
-    @Override
-    public Flux<Transaction> getTransactionsByAccount(String accountId, LocalDate fromDate, LocalDate toDate) {
-        return transactionService.getTransactionsByAccount(accountId, fromDate, toDate);
-    }
-
-    @Override
-    public Flux<Transaction> getTransactionsByConnection(String connectionId, LocalDate fromDate, LocalDate toDate) {
-        return transactionService.getTransactionsByConnection(connectionId, fromDate, toDate);
-    }
-
-    @Override
-    public Flux<Transaction> getTransactionsByCustomer(String customerId, LocalDate fromDate, LocalDate toDate) {
-        return transactionService.getTransactionsByCustomer(customerId, fromDate, toDate);
-    }
-
-    @Override
-    public Mono<Transaction> updateTransaction(String transactionId, Map<String, Object> attributes) {
-        return transactionService.updateTransaction(transactionId, attributes);
-    }
-
-    @Override
-    public Mono<Void> deleteTransaction(String transactionId) {
-        return transactionService.deleteTransaction(transactionId);
-    }
-
-    // Customer operations
 
 } 

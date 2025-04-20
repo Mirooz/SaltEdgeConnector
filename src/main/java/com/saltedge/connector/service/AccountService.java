@@ -1,7 +1,10 @@
 package com.saltedge.connector.service;
 
 import com.saltedge.connector.model.Account;
+import com.saltedge.connector.model.response.SaltEdgeResponse;
+import com.saltedge.connector.model.response.SaltEdgeSingleResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,25 +21,17 @@ public class AccountService {
         this.saltEdgeService = saltEdgeService;
     }
 
-    public Mono<Account> getAccount(String accountId) {
-        return saltEdgeService.get("/accounts/" + accountId, Account.class);
+    public Flux<Account> getAccountWithConnectionId(String connectionId) {
+        Map<String,Object> param = Map.of(
+                "connection_id",connectionId);
+        return saltEdgeService.get("/accounts", new ParameterizedTypeReference<SaltEdgeResponse<Account>>() {},param)
+                .flatMapMany(response -> Flux.fromIterable(response.getData()));
     }
 
-    public Flux<Account> getAccountsByConnection(String connectionId) {
-        return saltEdgeService.get("/accounts?connection_id=" + connectionId, Account[].class)
-                .flatMapMany(Flux::fromArray);
-    }
-
-    public Flux<Account> getAccountsByCustomer(String customerId) {
-        return saltEdgeService.get("/accounts?customer_id=" + customerId, Account[].class)
-                .flatMapMany(Flux::fromArray);
-    }
-
-    public Mono<Account> updateAccount(String accountId, Map<String, Object> attributes) {
-        return saltEdgeService.put("/accounts/" + accountId, attributes, Account.class);
-    }
-
-    public Mono<Void> deleteAccount(String accountId) {
-        return saltEdgeService.delete("/accounts/" + accountId, Void.class);
+    public Flux<Account> getAccountWithCustomerId(String customerId) {
+        Map<String,Object> param = Map.of(
+                "customer_id",customerId);
+        return saltEdgeService.get("/accounts", new ParameterizedTypeReference<SaltEdgeResponse<Account>>() {},param)
+                .flatMapMany(response -> Flux.fromIterable(response.getData()));
     }
 } 
