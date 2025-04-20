@@ -1,9 +1,6 @@
 package com.saltedge.connector.client;
 
-import com.saltedge.connector.model.Account;
-import com.saltedge.connector.model.Customers;
-import com.saltedge.connector.model.Provider;
-import com.saltedge.connector.model.Transaction;
+import com.saltedge.connector.model.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -27,41 +24,89 @@ public interface SaltEdgeClient {
      */
     Mono<Provider> getProvider(String providerCode);
 
-    // Customer operations
+    // Customers operations
     /**
-     * Creates a new customer
-     * @param identifier The customer identifier
-     * @return A Mono containing the created customer
+     * Creates a new Customers
+     * @param identifier The Customers identifier
+     * @return A Mono containing the created Customers
      */
     Mono<Customers> createCustomer(String identifier);
 
     /**
-     * Retrieves a customer by its ID
-     * @param customerId The customer ID
-     * @return A Mono containing the customer
+     * Retrieves a Customers by its ID
+     * @param customerId The Customers ID
+     * @return A Mono containing the Customers
      */
     Mono<Customers> getCustomer(String customerId);
 
     /**
-     * Retrieves all customers
-     * @return A Flux of customers
+     * Retrieves all Customerss
+     * @return A Flux of Customerss
      */
     Flux<Customers> getAllCustomers();
 
     /**
-     * Deletes a customer
-     * @param customerId The customer ID
+     * Deletes a Customers
+     * @param customerId The Customers ID
      * @return An empty Mono
      */
     Mono<Customers> deleteCustomer(String customerId);
 
     /**
-     * Updates a customer's attributes
-     * @param customerId The customer ID
+     * Updates a Customers's attributes
+     * @param customerId The Customers ID
      * @param attributes The attributes to update
-     * @return A Mono containing the updated customer
+     * @return A Mono containing the updated Customers
      */
     Mono<Customers> updateCustomer(String customerId, Map<String, Object> attributes);
+
+    // Connection operations
+
+    /**
+     * Retrieves a connection by its ID
+     * @param connectionId The connection ID
+     * @return A Mono containing the connection
+     */
+    Mono<Connection> getConnectionWithConnectionId(String connectionId);
+
+    /**
+     * Retrieves a connection by its ID with query parameters
+     * @param connectionId The connection ID
+     * @param queryParams The query parameters
+     * @return A Mono containing the connection
+     */
+    Mono<Connection> getConnectionWithCustomerId(String customerId);
+
+    /**
+     * Creates a new connection
+     * @param customerId The Customers ID
+     * @param returnToUrl The URL to return to after the connection process
+     * @return A Mono containing the created connection
+     */
+    Mono<ConnectionCreated> createConnection(String customerId, String returnToUrl);
+
+    /**
+     * Updates a connection's attributes
+     * @param connectionId The connection ID
+     * @param attributes The attributes to update
+     * @return A Mono containing the updated connection
+     */
+    Mono<Connection> updateConnection(String connectionId, Map<String, Object> attributes);
+
+    /**
+     * Deletes a connection
+     * @param connectionId The connection ID
+     * @return A Mono containing the deleted connection
+     */
+    Mono<Connection> deleteConnection(String connectionId);
+
+    /**
+     * Refreshes a connection
+     * @param connectionId The connection ID
+     * @param returnToUrl The URL to return to after the refresh process
+     * @return A Mono containing the refreshed connection
+     */
+    Mono<Connection> refreshConnection(String connectionId, String returnToUrl);
 
     // Account operations
     /**
@@ -79,8 +124,8 @@ public interface SaltEdgeClient {
     Flux<Account> getAccountsByConnection(String connectionId);
 
     /**
-     * Retrieves all accounts for a customer
-     * @param customerId The customer ID
+     * Retrieves all accounts for a Customers
+     * @param customerId The Customers ID
      * @return A Flux of accounts
      */
     Flux<Account> getAccountsByCustomer(String customerId);
@@ -127,8 +172,8 @@ public interface SaltEdgeClient {
     Flux<Transaction> getTransactionsByConnection(String connectionId, LocalDate fromDate, LocalDate toDate);
 
     /**
-     * Retrieves transactions for a customer within a date range
-     * @param customerId The customer ID
+     * Retrieves transactions for a Customers within a date range
+     * @param customerId The Customers ID
      * @param fromDate The start date
      * @param toDate The end date
      * @return A Flux of transactions

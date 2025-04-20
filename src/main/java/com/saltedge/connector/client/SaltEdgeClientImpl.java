@@ -1,11 +1,11 @@
 package com.saltedge.connector.client;
 
-import com.saltedge.connector.model.Account;
-import com.saltedge.connector.model.Customers;
-import com.saltedge.connector.model.Provider;
-import com.saltedge.connector.model.Transaction;
+import com.saltedge.connector.model.*;
+import com.saltedge.connector.service.AccountService;
+import com.saltedge.connector.service.ConnectionService;
 import com.saltedge.connector.service.CustomerService;
 import com.saltedge.connector.service.ProviderService;
+import com.saltedge.connector.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -24,17 +24,27 @@ import java.util.function.Function;
 @Component
 public class SaltEdgeClientImpl implements SaltEdgeClient {
     private final WebClient webClient;
-    @Autowired
     private final ProviderService providerService;
-    @Autowired
     private final CustomerService customerService;
+    private final ConnectionService connectionService;
+    private final AccountService accountService;
+    private final TransactionService transactionService;
 
+    @Autowired
     public SaltEdgeClientImpl(
             @Value("${saltedge.api.base-url}") String baseUrl,
             @Value("${saltedge.api.app-id}") String appId,
-            @Value("${saltedge.api.secret}") String secret, ProviderService providerService, CustomerService customerService) {
+            @Value("${saltedge.api.secret}") String secret,
+            ProviderService providerService,
+            CustomerService customerService,
+            ConnectionService connectionService,
+            AccountService accountService,
+            TransactionService transactionService) {
         this.providerService = providerService;
         this.customerService = customerService;
+        this.connectionService = connectionService;
+        this.accountService = accountService;
+        this.transactionService = transactionService;
         this.webClient = WebClient.builder()
                 .baseUrl(baseUrl)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
@@ -98,59 +108,91 @@ public class SaltEdgeClientImpl implements SaltEdgeClient {
         return customerService.updateCustomer(customerId,attributes);
     }
 
+
+    @Override
+    public Mono<Connection> getConnectionWithConnectionId(String connectionId) {
+        return connectionService.getConnectionWithConnectionId(connectionId);
+    }
+
+    @Override
+    public Mono<Connection> getConnectionWithCustomerId(String customerId) {
+        return connectionService.getConnectionWithCustomerId(customerId);
+    }
+
+    @Override
+    public Mono<ConnectionCreated> createConnection(String customerId, String returnToUrl) {
+        return connectionService.createConnection(customerId, returnToUrl);
+    }
+
+    @Override
+    public Mono<Connection> updateConnection(String connectionId, Map<String, Object> attributes) {
+        return connectionService.updateConnection(connectionId, attributes);
+    }
+
+    @Override
+    public Mono<Connection> deleteConnection(String connectionId) {
+        return connectionService.deleteConnection(connectionId);
+    }
+
+    @Override
+    public Mono<Connection> refreshConnection(String connectionId, String returnToUrl) {
+        return connectionService.refreshConnection(connectionId, returnToUrl);
+    }
+
+
     @Override
     public Mono<Account> getAccount(String accountId) {
-        return null;
+        return accountService.getAccount(accountId);
     }
 
     @Override
     public Flux<Account> getAccountsByConnection(String connectionId) {
-        return null;
+        return accountService.getAccountsByConnection(connectionId);
     }
 
     @Override
     public Flux<Account> getAccountsByCustomer(String customerId) {
-        return null;
+        return accountService.getAccountsByCustomer(customerId);
     }
 
     @Override
     public Mono<Account> updateAccount(String accountId, Map<String, Object> attributes) {
-        return null;
+        return accountService.updateAccount(accountId, attributes);
     }
 
     @Override
     public Mono<Void> deleteAccount(String accountId) {
-        return null;
+        return accountService.deleteAccount(accountId);
     }
 
     @Override
     public Mono<Transaction> getTransaction(String transactionId) {
-        return null;
+        return transactionService.getTransaction(transactionId);
     }
 
     @Override
     public Flux<Transaction> getTransactionsByAccount(String accountId, LocalDate fromDate, LocalDate toDate) {
-        return null;
+        return transactionService.getTransactionsByAccount(accountId, fromDate, toDate);
     }
 
     @Override
     public Flux<Transaction> getTransactionsByConnection(String connectionId, LocalDate fromDate, LocalDate toDate) {
-        return null;
+        return transactionService.getTransactionsByConnection(connectionId, fromDate, toDate);
     }
 
     @Override
     public Flux<Transaction> getTransactionsByCustomer(String customerId, LocalDate fromDate, LocalDate toDate) {
-        return null;
+        return transactionService.getTransactionsByCustomer(customerId, fromDate, toDate);
     }
 
     @Override
     public Mono<Transaction> updateTransaction(String transactionId, Map<String, Object> attributes) {
-        return null;
+        return transactionService.updateTransaction(transactionId, attributes);
     }
 
     @Override
     public Mono<Void> deleteTransaction(String transactionId) {
-        return null;
+        return transactionService.deleteTransaction(transactionId);
     }
 
     // Customer operations
