@@ -22,7 +22,6 @@ import java.util.function.Function;
 
 @Component
 public class SaltEdgeClientImpl implements SaltEdgeClient {
-    private final WebClient webClient;
     private final ProviderService providerService;
     private final CustomerService customerService;
     private final ConnectionService connectionService;
@@ -31,9 +30,6 @@ public class SaltEdgeClientImpl implements SaltEdgeClient {
 
     @Autowired
     public SaltEdgeClientImpl(
-            @Value("${saltedge.api.base-url}") String baseUrl,
-            @Value("${saltedge.api.app-id}") String appId,
-            @Value("${saltedge.api.secret}") String secret,
             ProviderService providerService,
             CustomerService customerService,
             ConnectionService connectionService,
@@ -44,12 +40,6 @@ public class SaltEdgeClientImpl implements SaltEdgeClient {
         this.connectionService = connectionService;
         this.accountService = accountService;
         this.transactionService = transactionService;
-        this.webClient = WebClient.builder()
-                .baseUrl(baseUrl)
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader("App-id", appId)
-                .defaultHeader("Secret", secret)
-                .build();
     }
 
     private Function<UriBuilder, URI> buildUri(String path, Map<String, Object> queryParams) {

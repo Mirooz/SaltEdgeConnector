@@ -52,6 +52,11 @@ public class Transaction {
     public static class Extra {
         @JsonProperty("id")
         private String id;
+        @JsonProperty("account_number")
+        private String accountNumber;
+
+        @JsonProperty("transfer_account_name")
+        private String transferAccountName;
 
         @JsonProperty("additional")
         private String additional;
