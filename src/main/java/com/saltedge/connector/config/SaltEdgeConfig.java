@@ -10,7 +10,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 
 @Configuration
-@ComponentScan("com.saltedge")
 @EnableConfigurationProperties(SaltEdgeProperties.class)
 public class SaltEdgeConfig {
     @Bean
